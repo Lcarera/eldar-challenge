@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -28,12 +28,13 @@ export class DataTableComponent implements OnInit {
   private postService = inject(PostService);
   private authService = inject(AuthService);
 
-  public posts: WritableSignal<Post[]> = this.postService.getPostes();
+  public posts: Post[] = [];
   public currentUserIsAdmin: boolean = false;
 
   ngOnInit(): void {
     this.postService.fetch();
     this.currentUserIsAdmin = this.authService.checkIfUserIsAdmin();
+    this.postService.posts$.subscribe((posts) => (posts ? this.posts = posts : []));
   }
 
   public filtroEvento(event: any): string {

@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Post } from '@domain/post.class';
 import { User } from '@domain/user.class';
 import { AuthService } from '@services/auth/auth.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,9 @@ import { AuthService } from '@services/auth/auth.service';
 export class PostService {
   private httpClient = inject(HttpClient);
   private authService = inject(AuthService);
-  private posts: WritableSignal<Post[]> = signal([]);
+
+  private postsSubject = new BehaviorSubject<Post[] | null>(null);
+  public posts$ = this.postsSubject.asObservable();
   constructor() {}
 
   fetch(): void {
@@ -23,11 +26,7 @@ export class PostService {
             this.authService.getUserById(item.userId) ??
             new User(item.userId, `invitado-${item.userId}@yahoo.com`),
         }));
-        this.posts.set(dataMapeada);
+        this.postsSubject.next(dataMapeada);
       });
-  }
-
-  getPostes(): WritableSignal<Post[]> {
-    return this.posts;
   }
 }
