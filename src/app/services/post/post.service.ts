@@ -29,4 +29,13 @@ export class PostService {
         this.postsSubject.next(dataMapeada);
       });
   }
+
+  getPostById(id: number): Post | null {
+    let post = null;
+    this.posts$.subscribe((posts) => {
+      if (!posts) return;
+      post = posts.find((p) => p.id === id);
+    });
+    return post || null;
+  }
 }

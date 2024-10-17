@@ -51,7 +51,7 @@ export class AuthService {
     return user || null;
   }
 
-  public checkIfUserIsAdmin(): boolean {
+  checkIfUserIsAdmin(): boolean {
     let isAdmin = false;
     this.currentUser$.subscribe((user) => {
       if (!user) return;
@@ -59,4 +59,5 @@ export class AuthService {
     });
     return isAdmin;
   }
+
 }

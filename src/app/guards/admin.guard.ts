@@ -19,7 +19,7 @@ export class AdminGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): MaybeAsync<GuardResult> {
-    if (this.authService.checkIfUserIsAdmin()) {
+    if (!this.authService.checkIfUserIsAdmin()) {
       this.router.navigate(['/dashboard']);
       return false;
     }

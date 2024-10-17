@@ -26,7 +26,7 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'edit-publicacion/:id',
+    path: 'editar-publicacion/:id',
     canActivate: [AuthGuard, AdminGuard],
     component: PostFormComponent,
     pathMatch: 'full',
