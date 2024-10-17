@@ -46,4 +46,9 @@ export class AuthService {
     this.isLoggedInSubject.next(false);
     localStorage.removeItem('currentUser');
   }
+
+  getUserById(id: number): Usuario | null {
+    const user = this.usuarios.find((u) => u.id === id);
+    return user || null;
+  }
 }
