@@ -1,33 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
-import { Publicacion } from '@domain/publicacion.class';
-import { Usuario } from '@domain/usuario.class';
+import { Post } from '@domain/post.class';
+import { User } from '@domain/user.class';
 import { AuthService } from '@services/auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PublicacionService {
+export class PostService {
   private httpClient = inject(HttpClient);
   private authService = inject(AuthService);
-  private publicaciones: WritableSignal<Publicacion[]> = signal([]);
+  private posts: WritableSignal<Post[]> = signal([]);
   constructor() {}
 
   fetch(): void {
     this.httpClient
-      .get<Publicacion[]>('https://jsonplaceholder.typicode.com/posts')
+      .get<Post[]>('https://jsonplaceholder.typicode.com/posts')
       .subscribe((res) => {
         const dataMapeada = res.map((item) => ({
           ...item,
-          usuario:
+          user:
             this.authService.getUserById(item.userId) ??
-            new Usuario(item.userId, `invitado-${item.userId}@yahoo.com`),
+            new User(item.userId, `invitado-${item.userId}@yahoo.com`),
         }));
-        this.publicaciones.set(dataMapeada);
+        this.posts.set(dataMapeada);
       });
   }
 
-  getPublicaciones(): WritableSignal<Publicacion[]> {
-    return this.publicaciones;
+  getPostes(): WritableSignal<Post[]> {
+    return this.posts;
   }
 }

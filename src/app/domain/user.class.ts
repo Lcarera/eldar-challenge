@@ -1,10 +1,10 @@
-import { Rol } from './rol.enum';
+import { Role } from './role.enum';
 
-export class Usuario {
+export class User {
   constructor(
     public id: number,
     public email: string,
     public password?: string,
-    public role?: Rol
+    public role?: Role
   ) {}
 }

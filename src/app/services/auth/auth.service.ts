@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { Usuario } from '@domain/usuario.class';
-import { Rol } from '@domain/rol.enum';
+import { User } from '@domain/user.class';
+import { Role } from '@domain/role.enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private usuarios = [
-    new Usuario(1, 'admin@eldar.com', 'admin123', Rol.ADMIN),
-    new Usuario(2, 'usuario@eldar.com', 'usuario123', Rol.USER),
+    new User(1, 'admin@eldar.com', 'admin123', Role.ADMIN),
+    new User(2, 'user@eldar.com', 'usuario123', Role.USER),
   ];
 
-  private currentUserSubject = new BehaviorSubject<Usuario | null>(null);
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
@@ -21,13 +21,13 @@ export class AuthService {
   constructor() {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
-      const user = JSON.parse(storedUser) as Usuario;
+      const user = JSON.parse(storedUser) as User;
       this.currentUserSubject.next(user);
       this.isLoggedInSubject.next(true);
     }
   }
 
-  login$(email: string, password: string): Observable<Usuario> {
+  login$(email: string, password: string): Observable<User> {
     const user = this.usuarios.find(
       (u) => u.email === email && u.password === password
     );
@@ -46,7 +46,7 @@ export class AuthService {
     localStorage.removeItem('currentUser');
   }
 
-  getUserById(id: number): Usuario | null {
+  getUserById(id: number): User | null {
     const user = this.usuarios.find((u) => u.id === id);
     return user || null;
   }
@@ -54,8 +54,8 @@ export class AuthService {
   public checkIfUserIsAdmin(): boolean {
     let isAdmin = false;
     this.currentUser$.subscribe((user) => {
-      if(!user) return;
-      isAdmin = user.role === Rol.ADMIN;
+      if (!user) return;
+      isAdmin = user.role === Role.ADMIN;
     });
     return isAdmin;
   }

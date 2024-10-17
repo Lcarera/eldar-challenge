@@ -1,17 +1,12 @@
-import {
-  Component,
-  inject,
-  OnInit,
-  WritableSignal,
-} from '@angular/core';
+import { Component, inject, OnInit, WritableSignal } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
-import { Publicacion } from '@domain/publicacion.class';
-import { PublicacionService } from '@services/publicacion/publicacion.service';
+import { Post } from '@domain/post.class';
+import { PostService } from '@services/post/post.service';
 import { AuthService } from '@services/auth/auth.service';
 
 @Component({
@@ -24,22 +19,20 @@ import { AuthService } from '@services/auth/auth.service';
     InputIconModule,
     IconFieldModule,
   ],
-  providers: [PublicacionService],
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.scss',
 })
 export class DataTableComponent implements OnInit {
   constructor() {}
 
-  private publicacionService = inject(PublicacionService);
+  private postService = inject(PostService);
   private authService = inject(AuthService);
 
-  public publicaciones: WritableSignal<Publicacion[]> =
-    this.publicacionService.getPublicaciones();
+  public posts: WritableSignal<Post[]> = this.postService.getPostes();
   public currentUserIsAdmin: boolean = false;
 
   ngOnInit(): void {
-    this.publicacionService.fetch();
+    this.postService.fetch();
     this.currentUserIsAdmin = this.authService.checkIfUserIsAdmin();
   }
 

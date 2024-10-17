@@ -1,11 +1,11 @@
-import { Usuario } from './usuario.class';
+import { User } from './user.class';
 
-export class Publicacion {
+export class Post {
   constructor(
     public id: number,
     public title: string,
     public body: string,
-    public usuario: Usuario,
+    public user: User,
     public userId: number
   ) {}
 }
