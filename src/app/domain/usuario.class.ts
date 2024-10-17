@@ -1,4 +1,4 @@
-import { Rol } from "./rol.enum";
+import { Rol } from './rol.enum';
 
 export class Usuario {
   constructor(
@@ -7,8 +7,4 @@ export class Usuario {
     public password?: string,
     public role?: Rol
   ) {}
-
-  isAdmin(): boolean {
-    return this.role === Rol.ADMIN;
-  }
 }

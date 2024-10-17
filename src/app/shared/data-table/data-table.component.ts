@@ -1,11 +1,9 @@
 import {
   Component,
   inject,
-  Input,
   OnInit,
   WritableSignal,
 } from '@angular/core';
-import { Rol } from '@domain/rol.enum';
 
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +12,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { Publicacion } from '@domain/publicacion.class';
 import { PublicacionService } from '@services/publicacion/publicacion.service';
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'app-data-table',
@@ -31,14 +30,17 @@ import { PublicacionService } from '@services/publicacion/publicacion.service';
 })
 export class DataTableComponent implements OnInit {
   constructor() {}
-  @Input() rol: Rol = Rol.USER;
 
   private publicacionService = inject(PublicacionService);
+  private authService = inject(AuthService);
+
   public publicaciones: WritableSignal<Publicacion[]> =
     this.publicacionService.getPublicaciones();
+  public currentUserIsAdmin: boolean = false;
 
   ngOnInit(): void {
     this.publicacionService.fetch();
+    this.currentUserIsAdmin = this.authService.checkIfUserIsAdmin();
   }
 
   public filtroEvento(event: any): string {

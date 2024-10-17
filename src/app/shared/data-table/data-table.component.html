@@ -1,8 +1,8 @@
 <div class="grid xl:px-8 md:px-6 px-2">
-  <div class="xl:col-2 col-12">
+  <div class="col-12">
     <h1 class="xl:my-4 mt-4 mb-0">Publicaciones</h1>
   </div>
-  <div class="xl:col-3 xl:col-offset-7 col-12">
+  <div class="xl:col-3 col-12">
     <p-iconField iconPosition="left" class="ml-auto">
       <p-inputIcon>
         <i class="pi pi-search"></i>
@@ -10,12 +10,17 @@
       <input
         pInputText
         type="text"
-        class="w-full my-4"
+        class="w-full"
         (input)="dt2.filterGlobal(filtroEvento($event), 'contains')"
         placeholder="Buscar Publicaciones"
       />
     </p-iconField>
   </div>
+  @if(currentUserIsAdmin) {
+    <div class="xl:col-2 xl:col-offset-7 col-12">
+      <button pButton pRipple label="Nueva Publicación" icon="pi pi-plus" class="w-full"></button>
+    </div>
+  }
   <div class="card col-12">
     <p-table
       #dt2

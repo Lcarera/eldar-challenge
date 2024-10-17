@@ -28,7 +28,6 @@ export class AuthService {
   }
 
   login$(email: string, password: string): Observable<Usuario> {
-    console.log(this.usuarios);
     const user = this.usuarios.find(
       (u) => u.email === email && u.password === password
     );
@@ -50,5 +49,14 @@ export class AuthService {
   getUserById(id: number): Usuario | null {
     const user = this.usuarios.find((u) => u.id === id);
     return user || null;
+  }
+
+  public checkIfUserIsAdmin(): boolean {
+    let isAdmin = false;
+    this.currentUser$.subscribe((user) => {
+      if(!user) return;
+      isAdmin = user.role === Rol.ADMIN;
+    });
+    return isAdmin;
   }
 }
