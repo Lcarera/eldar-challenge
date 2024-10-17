@@ -19,7 +19,9 @@ export class PublicacionService {
       .subscribe((res) => {
         const dataMapeada = res.map((item) => ({
           ...item,
-          usuario: this.authService.getUserById(item.userId) ?? new Usuario(item.userId, `invitado-${item.userId}@yahoo.com`),
+          usuario:
+            this.authService.getUserById(item.userId) ??
+            new Usuario(item.userId, `invitado-${item.userId}@yahoo.com`),
         }));
         this.publicaciones.set(dataMapeada);
       });

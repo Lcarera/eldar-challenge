@@ -24,10 +24,7 @@
     </div>
 
     <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
-      <p-messages
-        [(value)]="errorMessages"
-        [enableService]="false"
-      />
+      <p-messages [(value)]="errorMessages" [enableService]="false" />
       <label for="emailInput" class="block text-900 font-medium mb-2"
         >Email</label
       >
