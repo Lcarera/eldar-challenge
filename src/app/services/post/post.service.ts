@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Post } from '@domain/post.class';
 import { User } from '@domain/user.class';
 import { AuthService } from '@services/auth/auth.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -39,26 +39,31 @@ export class PostService {
     return post || null;
   }
 
-  savePost(post: Post): void {
+  savePost(post: Post): Observable<Post> {
     post.user = this.authService.getCurrentUser()!;
     post.userId = post.user.id;
-    this.httpClient
+    return this.httpClient
       .post<Post>('https://jsonplaceholder.typicode.com/posts', post)
-      .subscribe((res) => {
-        const currentPosts = this.postsSubject.value;
-        this.postsSubject.next([...currentPosts, res]);
-      });
+      .pipe(
+        tap((res) => {
+          const currentPosts = this.postsSubject.value;
+          this.postsSubject.next([...currentPosts, res]);
+        })
+      );
   }
 
-  updatePost(post: Post): void {
+  updatePost(post: Post): Observable<Post> {
     post.user = this.authService.getUserById(post.userId) ??
-    new User(post.userId, `invitado-${post.userId}@yahoo.com`),
-    this.httpClient
+      new User(post.userId, `invitado-${post.userId}@yahoo.com`);
+
+    return this.httpClient
       .put<Post>(`https://jsonplaceholder.typicode.com/posts/${post.id}`, post)
-      .subscribe((res) => {
-        this.postsSubject.next(
-          this.postsSubject.value.map((p) => (p.id === res.id ? res : p))
-        );
-      });
+      .pipe(
+        tap((res) => {
+          this.postsSubject.next(
+            this.postsSubject.value.map((p) => (p.id === res.id ? res : p))
+          );
+        })
+      );
   }
 }

@@ -31,6 +31,7 @@ export class PostFormComponent {
   modo!: 'agregar' | 'editar';
   postForm!: FormGroup;
   submitted = false;
+  loading = false;
 
   private route = inject(ActivatedRoute);
   private postService = inject(PostService);
@@ -70,17 +71,37 @@ export class PostFormComponent {
   }
   onSubmit() {
     this.submitted = true;
-
     if (this.postForm.invalid) {
       return;
     }
+    this.loading = true;
 
     if (this.modo === 'agregar') {
-      this.postService.savePost(this.postForm.value);
+      this.postService.savePost(this.postForm.value).subscribe({
+        next: () => {
+          this.loading = false;
+          this.notificationService.showSuccess('Publicación guardada');
+          this.router.navigate(['/dashboard']);
+        },
+        error: (err) => {
+          this.loading = false;
+          this.notificationService.showError('Error al guardar la publicación');
+          console.error('Error al guardar la publicación:', err);
+        }
+      });
     } else {
-      this.postService.updatePost(this.postForm.value);
+      this.postService.updatePost(this.postForm.value).subscribe({
+        next: () => {
+          this.loading = false;
+          this.notificationService.showSuccess('Publicación actualizada');
+          this.router.navigate(['/dashboard']);
+        },
+        error: (err) => {
+          this.loading = false;
+          this.notificationService.showError('Error al actualizar la publicación');
+          console.error('Error al actualizar la publicación:', err);
+        }
+      });
     }
-    this.notificationService.showSuccess('Publicación guardada');
-    this.router.navigate(['/dashboard']);
   }
 }

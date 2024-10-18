@@ -41,11 +41,12 @@ export class DataTableComponent implements OnInit {
   public currentUserIsAdmin: boolean = false;
 
   ngOnInit(): void {
-    this.postService.fetch();
+
     this.currentUserIsAdmin = this.authService.checkIfUserIsAdmin();
-    this.postService.posts$.subscribe((posts) =>
-      posts ? (this.posts = posts) : []
-    );
+    this.postService.posts$.subscribe((posts) => {
+      if (posts.length > 0) this.posts = posts;
+      else this.postService.fetch();
+    });
 
     setTimeout(() => {
       this.notificationService.notification$.subscribe((notification) => {
@@ -54,7 +55,6 @@ export class DataTableComponent implements OnInit {
           severity: notification.severity,
           summary: notification.content,
         });
-        this.notificationService.clearNotification();
       });
     });
   }
