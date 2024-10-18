@@ -11,6 +11,7 @@ import { AuthService } from '@services/auth/auth.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { NotificationService } from '@services/notification.service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-data-table',
@@ -22,6 +23,7 @@ import { NotificationService } from '@services/notification.service';
     InputIconModule,
     IconFieldModule,
     ToastModule,
+    RouterLink
   ],
   providers: [MessageService],
   templateUrl: './data-table.component.html',
@@ -34,6 +36,7 @@ export class DataTableComponent implements OnInit {
   private authService = inject(AuthService);
   private notificationService = inject(NotificationService);
   private messageService = inject(MessageService);
+  private router = inject(Router);
 
   public posts: Post[] = [];
   public currentUserIsAdmin: boolean = false;
@@ -46,9 +49,7 @@ export class DataTableComponent implements OnInit {
     );
 
     setTimeout(() => {
-      console.log('timeout');
       this.notificationService.notification$.subscribe((notification) => {
-        console.log(notification);
         if (!notification) return;
         this.messageService.add({
           severity: notification.severity,

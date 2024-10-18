@@ -12,7 +12,7 @@ export class PostService {
   private httpClient = inject(HttpClient);
   private authService = inject(AuthService);
 
-  private postsSubject = new BehaviorSubject<Post[] | null>(null);
+  private postsSubject = new BehaviorSubject<Post[] | []>([]);
   public posts$ = this.postsSubject.asObservable();
   constructor() {}
 
@@ -37,5 +37,26 @@ export class PostService {
       post = posts.find((p) => p.id === id);
     });
     return post || null;
+  }
+
+  savePost(post: Post): void {
+    post.user = this.authService.getCurrentUser()!;
+    post.userId = post.user.id;
+    this.httpClient
+      .post<Post>('https://jsonplaceholder.typicode.com/posts', post)
+      .subscribe((res) => {
+        const currentPosts = this.postsSubject.value;
+        this.postsSubject.next([...currentPosts, res]);
+      });
+  }
+
+  updatePost(post: Post): void {
+    this.httpClient
+      .put<Post>(`https://jsonplaceholder.typicode.com/posts/${post.id}`, post)
+      .subscribe((res) => {
+        this.postsSubject.next(
+          this.postsSubject.value.map((p) => (p.id === res.id ? res : p))
+        );
+      });
   }
 }

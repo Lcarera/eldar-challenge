@@ -60,4 +60,8 @@ export class AuthService {
     return isAdmin;
   }
 
+  getCurrentUser(): User | null {
+    return this.currentUserSubject.value;
+  }
+
 }

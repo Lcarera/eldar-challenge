@@ -19,13 +19,15 @@
   </div>
   @if(currentUserIsAdmin) {
   <div class="xl:col-2 xl:col-offset-7 col-12">
-    <button
+    <a
       pButton
       pRipple
+      routerLink="/nueva-publicacion"
+      routerLinkActive="active"
       label="Nueva Publicación"
       icon="pi pi-plus"
       class="w-full"
-    ></button>
+    ></a>
   </div>
   }
   <div class="card col-12">
