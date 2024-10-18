@@ -44,6 +44,8 @@ export class PostFormComponent {
     this.postForm = this.fb.group({
       title: ['', Validators.required],
       body: ['', Validators.required],
+      id: [0],
+      userId: [0],
     });
 
     const id = this.route.snapshot.paramMap.get('id');
@@ -54,6 +56,8 @@ export class PostFormComponent {
         this.postForm.patchValue({
           title: post.title,
           body: post.body,
+          id: post.id,
+          userId: post.userId,
         });
       } else {
         this.notificationService.showError('No se encontro la publicacion');

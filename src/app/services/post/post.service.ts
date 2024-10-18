@@ -51,6 +51,8 @@ export class PostService {
   }
 
   updatePost(post: Post): void {
+    post.user = this.authService.getUserById(post.userId) ??
+    new User(post.userId, `invitado-${post.userId}@yahoo.com`),
     this.httpClient
       .put<Post>(`https://jsonplaceholder.typicode.com/posts/${post.id}`, post)
       .subscribe((res) => {
