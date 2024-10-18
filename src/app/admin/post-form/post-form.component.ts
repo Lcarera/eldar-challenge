@@ -1,7 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NotificationService } from '@services/notification.service';
 import { PostService } from '@services/post/post.service';
 import { ButtonModule } from 'primeng/button';
@@ -11,7 +16,14 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 @Component({
   selector: 'app-post-form',
   standalone: true,
-  imports: [ButtonModule, InputTextModule, CommonModule, ReactiveFormsModule, InputTextareaModule],
+  imports: [
+    ButtonModule,
+    InputTextModule,
+    CommonModule,
+    ReactiveFormsModule,
+    InputTextareaModule,
+    RouterLink,
+  ],
   templateUrl: './post-form.component.html',
   styleUrl: './post-form.component.scss',
 })

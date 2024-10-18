@@ -11,7 +11,7 @@ import { AuthService } from '@services/auth/auth.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { NotificationService } from '@services/notification.service';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-data-table',
@@ -36,7 +36,6 @@ export class DataTableComponent implements OnInit {
   private authService = inject(AuthService);
   private notificationService = inject(NotificationService);
   private messageService = inject(MessageService);
-  private router = inject(Router);
 
   public posts: Post[] = [];
   public currentUserIsAdmin: boolean = false;
