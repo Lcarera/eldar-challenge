@@ -5,6 +5,12 @@
     class="surface-card p-4 shadow-2 border-round w-full lg:w-6 h-full h-auto lg:m-0 mx-2 my-2"
     style="max-height: 800px"
   >
+  @if(modo == "editar"){
+    <h1 class="mt-0">Editar Publicación</h1>
+  }
+  @else{
+    <h1 class="mt-0">Agregar Publicación</h1>
+  }
     <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
       <label for="title" class="block text-900 font-medium mb-2">Título</label>
       <input
@@ -35,6 +41,7 @@
           'ng-invalid': submitted && postForm.controls['body'].errors
         }"
         rows="5"
+        style="max-height: 200px; min-height: 50px;"
       ></textarea>
       <small
         *ngIf="submitted && postForm.controls['body'].errors"
